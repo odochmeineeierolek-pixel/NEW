@@ -11,6 +11,14 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Projekt entpacken
+        shell: pwsh
+        run: |
+          $z = Get-ChildItem -Recurse -Filter *.zip | Select-Object -First 1
+          if (-not $z) { Get-ChildItem -Recurse -Name | Select-Object -First 80; throw "Keine ZIP-Datei im Repo gefunden" }
+          Write-Host "Entpacke $($z.FullName)"
+          Expand-Archive -Path $z.FullName -DestinationPath . -Force
+          Get-ChildItem -Name
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
