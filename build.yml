@@ -11,6 +11,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+            - name: Projekt entpacken
+        shell: pwsh
+        run: Expand-Archive -Path kyto-task-python.zip -DestinationPath . -Force
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
