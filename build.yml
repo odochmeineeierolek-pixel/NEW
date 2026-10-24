@@ -11,13 +11,18 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-            - name: Projekt entpacken
+      - name: Projekt entpacken
         shell: pwsh
-        run: Expand-Archive -Path kyto-task-python.zip -DestinationPath . -Force
+        run: |
+          $z = Get-ChildItem -Recurse -Filter *.zip | Select-Object -First 1
+          if (-not $z) { Get-ChildItem -Recurse -Name | Select-Object -First 80; throw "Keine ZIP-Datei im Repo gefunden" }
+          Write-Host "Entpacke $($z.FullName)"
+          Expand-Archive -Path $z.FullName -DestinationPath . -Force
+          Get-ChildItem -Name
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Abhängigkeiten installieren
+      - name: Abhaengigkeiten installieren
         run: python -m pip install -r requirements.txt pyinstaller
       - name: Tests
         run: |
@@ -27,7 +32,7 @@ jobs:
           python tests/test_wallet.py
       - name: Icon erzeugen
         run: python tools/make_icon.py
-      - name: Programm bauen (PyInstaller)
+      - name: Programm bauen
         run: >
           pyinstaller main.py --name KytoTask --noconsole --noconfirm --icon assets/yavis.ico
           --paths . --collect-submodules yavis
@@ -37,14 +42,14 @@ jobs:
           --collect-all pyttsx3 --collect-all ddgs --collect-all primp
           --hidden-import pyttsx3.drivers --hidden-import pyttsx3.drivers.sapi5 --hidden-import win32com
           --hidden-import comtypes --hidden-import pyperclip
-      - name: Selbsttest der fertigen EXE
+      - name: Selbsttest der EXE
         shell: pwsh
         run: |
           $env:QT_QPA_PLATFORM = "offscreen"
           $p = Start-Process -FilePath "dist\KytoTask\KytoTask.exe" -ArgumentList "--selftest" -Wait -PassThru
           Get-Content "dist\KytoTask\selftest.txt"
           if ($p.ExitCode -ne 0) { throw "Selbsttest fehlgeschlagen" }
-      - name: Installer bauen (Inno Setup)
+      - name: Installer bauen
         shell: pwsh
         run: |
           choco install innosetup -y --no-progress
@@ -53,7 +58,7 @@ jobs:
         with:
           name: KytoTask-Setup
           path: installer/Output/KytoTask-Setup.exe
-      - name: Release (nur bei Tag v*)
+      - name: Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
