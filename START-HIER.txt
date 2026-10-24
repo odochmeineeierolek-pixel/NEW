@@ -1,0 +1,25 @@
+YAVIS – Windows-Kurzanleitung
+
+1. ZIP-Datei vollständig entpacken.
+2. Im entpackten Ordner START-YAVIS.bat doppelklicken.
+   Das Skript prüft Python und installiert die in requirements.txt genannten Pakete.
+3. Beim ersten Start kann das Installieren und Herunterladen einige Minuten dauern.
+
+Krypto:
+- Kurse werden online über CoinGecko geladen.
+- Käufe/Verkäufe sind nur Simulationen (Paper Trading), kein Echtgeldhandel.
+
+Bitcoin-Wallet:
+- Bereich „Crypto AI Trading“ enthält „Bitcoin-Wallet · Nur lesend“.
+- Dort kann eine öffentliche BTC-Adresse eingetragen werden, um Blockchain-Guthaben
+  und die letzten Transaktionen über Blockstream abzurufen.
+- Niemals Seed-Phrase oder Private Key eingeben. Diese App fragt beides nicht ab.
+- Das ist eine Adressüberwachung, keine direkte Anmeldung an Blockstream Green.
+  Senden/Empfangen innerhalb der Wallet-App ist nicht integriert.
+
+Mining:
+- YAVIS lädt keine Miner herunter und installiert keine Miner automatisch.
+- Zum Mining ist eine separat beschaffte, vertrauenswürdige kompatible Miner-EXE nötig.
+- Stromkosten und GPU-Telemetrie sind Schätz-/Messwerte; Profitabilität ist nicht garantiert.
+
+Hinweis: Für Live-Kurse, Blockstream-Daten und Miner-Software ist Internetzugang nötig.
